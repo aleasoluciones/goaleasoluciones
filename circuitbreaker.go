@@ -1,6 +1,8 @@
 package gocircuitbreaker
 
-import "time"
+import (
+	"time"
+)
 
 type Circuit struct {
 	numErrors int
@@ -35,6 +37,8 @@ func NewCircuit(numErrors int, resetTime time.Duration) *Circuit {
 func (crt Circuit) run() {
 	numErrors := 0
 	resetting := false
+	lastError := time.Now()
+
 	for command := range crt.commands {
 
 		switch command.action {
@@ -45,7 +49,14 @@ func (crt Circuit) run() {
 		case OK:
 			numErrors = 0
 		case ERROR:
-			numErrors++
+			now := time.Now()
+			if now.Sub(lastError) >= crt.resetTime {
+				numErrors = 1
+			} else {
+				numErrors++
+			}
+			lastError = now
+
 			if crt.numErrors == numErrors {
 				resetting = true
 				go crt.waitUntilReset(time.After(crt.resetTime))
