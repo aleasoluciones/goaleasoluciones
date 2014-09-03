@@ -1,8 +1,6 @@
 package gocircuitbreaker
 
-import (
-	"time"
-)
+import "time"
 
 type Circuit struct {
 	numErrors int
