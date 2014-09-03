@@ -2,19 +2,25 @@
 
 [![Build Status](https://travis-ci.org/aleasoluciones/gocircuitbreaker.svg?branch=master)](https://travis-ci.org/aleasoluciones/gocircuitbreaker)
 
-A Go library for the circuit breaker pattern:
+A Go library for the [circuit breaker pattern](https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern)
 
-http://en.wikipedia.org/wiki/Circuit_breaker_design_pattern
+## Installation
 
-## Local Build and Test
+```
+$ go get github.com/aleasoluciones/gocircuitbreaker
+```
 
-You can use go get command:
+Add it to your code:
 
-    go get github.com/aleasoluciones/gocircuitbreaker
+```go
+import "github.com/aleasoluciones/gocircuitbreaker"
+```
 
-Testing:
+## Testing
 
-    go test -v
+```
+$ go test -v
+```
 
 ## Usage
 
