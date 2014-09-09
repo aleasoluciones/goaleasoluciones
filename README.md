@@ -17,7 +17,7 @@ import "github.com/aleasoluciones/goaleasoluciones"
 ## Testing
 
 ```
-$ go test -v
+$ go test -v ./...
 ```
 
 ##License
