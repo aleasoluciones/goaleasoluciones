@@ -1,7 +1,7 @@
-package main
+package scheduled_task
 
 import (
-	"github.com/aleasoluciones/go-spikes/clock"
+	"github.com/aleasoluciones/goaleasoluciones/clock"
 	"log"
 	"time"
 )
