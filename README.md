@@ -1,20 +1,17 @@
-# Circuit Breaker
+# goaleasoluciones [![Build Status](https://travis-ci.org/aleasoluciones/goaleasoluciones.svg?branch=master)](https://travis-ci.org/aleasoluciones/goaleasoluciones) [![Coverage Status](https://img.shields.io/coveralls/aleasoluciones/goaleasoluciones.svg)](https://coveralls.io/r/aleasoluciones/goaleasoluciones?branch=master)
 
-[![Build Status](https://travis-ci.org/aleasoluciones/gocircuitbreaker.svg?branch=master)](https://travis-ci.org/aleasoluciones/gocircuitbreaker)
-[![Coverage Status](https://img.shields.io/coveralls/aleasoluciones/gocircuitbreaker.svg)](https://coveralls.io/r/aleasoluciones/gocircuitbreaker?branch=master)
-
-A Go library for the [circuit breaker pattern](https://en.wikipedia.org/wiki/Circuit_breaker_design_pattern)
+Common libraries for writing go services/applications.
 
 ## Installation
 
 ```
-$ go get github.com/aleasoluciones/gocircuitbreaker
+$ go get github.com/aleasoluciones/goaleasoluciones
 ```
 
 Add it to your code:
 
 ```go
-import "github.com/aleasoluciones/gocircuitbreaker"
+import "github.com/aleasoluciones/goaleasoluciones"
 ```
 
 ## Testing
@@ -22,9 +19,6 @@ import "github.com/aleasoluciones/gocircuitbreaker"
 ```
 $ go test -v
 ```
-
-## Usage
-
 
 ##License
 (The MIT License)
