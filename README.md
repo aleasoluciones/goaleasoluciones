@@ -8,12 +8,6 @@ Common libraries for writing go services/applications.
 $ go get github.com/aleasoluciones/goaleasoluciones
 ```
 
-Add it to your code:
-
-```go
-import "github.com/aleasoluciones/goaleasoluciones"
-```
-
 ## Testing
 
 ```

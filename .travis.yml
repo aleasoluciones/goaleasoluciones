@@ -11,4 +11,4 @@ before_install:
   - go get code.google.com/p/go.tools/cmd/cover
 
 script:
-  - $HOME/gopath/bin/goveralls ./... -repotoken MVgZrQLXTGFTsOYxlE1OQvyeeQtXfWIE5
+  - ./test-coverage.sh
