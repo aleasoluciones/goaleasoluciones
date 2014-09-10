@@ -3,9 +3,9 @@ package clock
 import (
 	"testing"
 	"time"
+
 	"github.com/stretchr/testify/assert"
 )
-
 
 func TestClockReturnsCurrentTime(t *testing.T) {
 	clock := NewClock()
@@ -51,7 +51,7 @@ func TestSleeperSleepUntilIfDurationIsAheadOfCurrentTime(t *testing.T) {
 
 	sleeper.SleepUntil(time.Date(2013, time.September, 9, 23, 0, 5, 0, time.UTC))
 
-	assert.Equal(t, sleepFnCalled, 5 * time.Second)
+	assert.Equal(t, sleepFnCalled, 5*time.Second)
 }
 
 func TestSleeperDoNotSleepUntilIfDurationIsBehindOfCurrentTime(t *testing.T) {
