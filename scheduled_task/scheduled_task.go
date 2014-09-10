@@ -1,9 +1,10 @@
 package scheduled_task
 
 import (
-	"github.com/aleasoluciones/goaleasoluciones/clock"
 	"log"
 	"time"
+
+	"github.com/aleasoluciones/goaleasoluciones/clock"
 )
 
 type ScheduledTask struct {
@@ -58,35 +59,4 @@ func (scheduler *ScheduledTask) run() {
 func (scheduler *ScheduledTask) Stop() {
 	close(scheduler.finish)
 	<-scheduler.done
-}
-
-func sleepAndPrint(duration time.Duration, message string) {
-	log.Println("sleeping ", duration)
-	log.Println(message)
-	time.Sleep(duration)
-	log.Println("awake")
-}
-
-func main() {
-	task := NewScheduledTask(
-		func() {
-			sleepAndPrint(3*time.Second, "Task 1")
-		},
-		5*time.Second,  // periode
-		10*time.Second, // ttl
-	)
-	log.Println("Executing")
-	time.Sleep(20 * time.Second)
-
-	task2 := NewScheduledTask(
-		func() {
-			sleepAndPrint(3*time.Second, "Task 2")
-		},
-		1*time.Second,  // periode
-		10*time.Second, // ttl
-	)
-	time.Sleep(10 * time.Second)
-	task.Stop()
-	task2.Stop()
-	time.Sleep(20 * time.Second)
 }
