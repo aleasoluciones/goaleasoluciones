@@ -1,4 +1,4 @@
-package scheduled_task
+package scheduledtask
 
 import (
 	"log"
