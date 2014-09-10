@@ -8,7 +8,7 @@ import (
 )
 
 func newCircuit() *Circuit {
-	return NewCircuit(3, 1*time.Second)
+	return NewCircuit(3, 100*time.Microsecond)
 }
 
 func TestOpenWhenItHasTheNumberOfConfiguredErrors(t *testing.T) {
@@ -49,5 +49,5 @@ func TestClosedWhenTheCircuitHasBeenResetAsTimeExpired(t *testing.T) {
 }
 
 func waitUntilReset() {
-	time.Sleep(1 * time.Second)
+	time.Sleep(100 * time.Microsecond)
 }
