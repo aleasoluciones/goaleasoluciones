@@ -12,6 +12,7 @@ func newCircuit() *Circuit {
 }
 
 func TestOpenWhenItHasTheNumberOfConfiguredErrors(t *testing.T) {
+	t.Parallel()
 	circuit := newCircuit()
 	circuit.Error()
 	circuit.Error()
@@ -20,6 +21,7 @@ func TestOpenWhenItHasTheNumberOfConfiguredErrors(t *testing.T) {
 }
 
 func TestClosedAfterAnOKWhenItWasOpen(t *testing.T) {
+	t.Parallel()
 	circuit := newCircuit()
 	circuit.Error()
 	circuit.Error()
@@ -30,6 +32,7 @@ func TestClosedAfterAnOKWhenItWasOpen(t *testing.T) {
 }
 
 func TestClosedWhenItIsOpenAndResetTimeHasExpired(t *testing.T) {
+	t.Parallel()
 	circuit := newCircuit()
 	circuit.Error()
 	circuit.Error()
@@ -40,6 +43,7 @@ func TestClosedWhenItIsOpenAndResetTimeHasExpired(t *testing.T) {
 }
 
 func TestClosedWhenTheCircuitHasBeenResetAsTimeExpired(t *testing.T) {
+	t.Parallel()
 	circuit := newCircuit()
 	circuit.Error()
 	circuit.Error()

@@ -8,16 +8,19 @@ import (
 )
 
 func TestInitialLenIsZero(t *testing.T) {
+	t.Parallel()
 	assert.Equal(t, New().Len(), 0)
 }
 
 func TestKeyNotFound(t *testing.T) {
+	t.Parallel()
 	result, found := New().Find("unknown_key")
 	assert.Nil(t, result)
 	assert.False(t, found)
 }
 
 func TestNewKeyInsertion(t *testing.T) {
+	t.Parallel()
 	sm := New()
 	sm.Insert("key", "value")
 	assert.Equal(t, sm.Len(), 1)
@@ -27,6 +30,7 @@ func TestNewKeyInsertion(t *testing.T) {
 }
 
 func TestDeleteAKey(t *testing.T) {
+	t.Parallel()
 	sm := New()
 	sm.Insert("key", "value")
 	sm.Delete("key")
@@ -36,6 +40,7 @@ func TestDeleteAKey(t *testing.T) {
 }
 
 func TestUpdateAnExistingKey(t *testing.T) {
+	t.Parallel()
 	sm := New()
 	sm.Insert("key", "value")
 	sm.Update("key", func(value interface{}, found bool) interface{} {
@@ -47,6 +52,7 @@ func TestUpdateAnExistingKey(t *testing.T) {
 }
 
 func TestUpdateANonExistingKey(t *testing.T) {
+	t.Parallel()
 	sm := New()
 	sm.Update("key", func(value interface{}, found bool) interface{} {
 		return fmt.Sprintf("%s_updated", value)
@@ -57,6 +63,7 @@ func TestUpdateANonExistingKey(t *testing.T) {
 }
 
 func TestClose(t *testing.T) {
+	t.Parallel()
 	sm := New()
 	sm.Close()
 	assert.Panics(t, func() {

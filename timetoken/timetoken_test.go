@@ -14,6 +14,7 @@ func TokenManager(periodicFuncTimesCalled *int) *tokenManager {
 }
 
 func TestPeriodicFunctionCalledUntilTTL(t *testing.T) {
+	t.Parallel()
 	periodicFuncTimesCalled := 0
 	tm := TokenManager(&periodicFuncTimesCalled)
 	tm.Add("id", 3*time.Millisecond)
@@ -22,6 +23,7 @@ func TestPeriodicFunctionCalledUntilTTL(t *testing.T) {
 }
 
 func TestPeriodicFunctionCalledEveryPeriodeUntilTTL(t *testing.T) {
+	t.Parallel()
 	periodicFuncTimesCalled := 0
 	tm := TokenManager(&periodicFuncTimesCalled)
 	tm.Add("id", 3*time.Millisecond)

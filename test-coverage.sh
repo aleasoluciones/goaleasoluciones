@@ -18,7 +18,7 @@ do
     	fi
     fi
 done
-$HOME/gopath/bin/goveralls -coverprofile=acc.out -repotoken MVgZrQLXTGFTsOYxlE1OQvyeeQtXfWIE5
+$HOME/gopath/bin/goveralls -coverprofile=acc.out -repotoken MVgZrQLXTGFTsOYxlE1OQvyeeQtXfWIE5 --parallel 10
 
 rm -rf ./profile.out
 rm -rf ./acc.out

@@ -8,6 +8,7 @@ import (
 )
 
 func TestClockReturnsCurrentTime(t *testing.T) {
+	t.Parallel()
 	clock := NewClock()
 
 	result := clock.Now()
@@ -16,6 +17,7 @@ func TestClockReturnsCurrentTime(t *testing.T) {
 }
 
 func TestClockReturnsToday(t *testing.T) {
+	t.Parallel()
 	clock := NewClock()
 
 	year, month, day := clock.Today()
@@ -27,6 +29,7 @@ func TestClockReturnsToday(t *testing.T) {
 }
 
 func TestSleeperSleep(t *testing.T) {
+	t.Parallel()
 	sleeper := NewSleeper()
 
 	sleeper.Sleep(1 * time.Millisecond)
@@ -43,6 +46,7 @@ func (clock *FakeClock) Today() (year int, month time.Month, day int) {
 }
 
 func TestSleeperSleepUntilIfDurationIsAheadOfCurrentTime(t *testing.T) {
+	t.Parallel()
 	sleeper := NewSleeper()
 	clock := &FakeClock{}
 	sleeper.clock = clock
@@ -55,6 +59,7 @@ func TestSleeperSleepUntilIfDurationIsAheadOfCurrentTime(t *testing.T) {
 }
 
 func TestSleeperDoNotSleepUntilIfDurationIsBehindOfCurrentTime(t *testing.T) {
+	t.Parallel()
 	sleeper := NewSleeper()
 	clock := &FakeClock{}
 	sleeper.clock = clock
