@@ -4,10 +4,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/aleasoluciones/goaleasoluciones/clock"
 	"github.com/aleasoluciones/goaleasoluciones/scheduledtask"
 )
 
-type TokenManager struct {
+type tokenManager struct {
 	periode      time.Duration
 	ttl          time.Duration
 	periodicFunc func(id string)
@@ -16,8 +17,8 @@ type TokenManager struct {
 	clock        clock.Clock
 }
 
-func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *TokenManager {
-	tm := TokenManager{
+func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *tokenManager {
+	tm := tokenManager{
 		periode:      periode,
 		ttl:          ttl,
 		periodicFunc: periodicFunc,
@@ -32,7 +33,7 @@ func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *
 	return &tm
 }
 
-func (tm TokenManager) executePeriodicFunc() {
+func (tm tokenManager) executePeriodicFunc() {
 	tm.mutex.Lock()
 	defer tm.mutex.Unlock()
 
@@ -47,7 +48,7 @@ func (tm TokenManager) executePeriodicFunc() {
 	}
 }
 
-func (tm *TokenManager) Add(id string, ttl time.Duration) {
+func (tm *tokenManager) Add(id string, ttl time.Duration) {
 	tm.mutex.Lock()
 	defer tm.mutex.Unlock()
 
