@@ -34,3 +34,13 @@ func TestPeriodicFunctionCalledEveryPeriodeUntilTTL(t *testing.T) {
 	time.Sleep(1 * time.Millisecond)
 	assert.Equal(t, 2, periodicFuncTimesCalled)
 }
+
+func TestPeriodicFunctionNotCalledAfterTTL(t *testing.T) {
+	t.Parallel()
+	periodicFuncTimesCalled := 0
+	tm := TokenManager(&periodicFuncTimesCalled)
+	tm.Add("id", 2*time.Millisecond)
+
+	time.Sleep(3 * time.Millisecond)
+	assert.Equal(t, 2, periodicFuncTimesCalled)
+}
