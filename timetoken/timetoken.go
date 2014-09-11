@@ -13,14 +13,16 @@ type TokenManager struct {
 	periodicFunc func(id string)
 	tokens       map[string]time.Time
 	mutex        sync.Mutex
+	clock        clock.Clock
 }
 
-func New(periode, ttl time.Duration, periodicFunc func(id string)) *TokenManager {
+func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *TokenManager {
 	tm := TokenManager{
 		periode:      periode,
 		ttl:          ttl,
 		periodicFunc: periodicFunc,
 		tokens:       make(map[string]time.Time),
+		clock:        clock.NewClock(),
 	}
 
 	scheduledtask.NewScheduledTask(
@@ -34,7 +36,7 @@ func (tm TokenManager) executePeriodicFunc() {
 	tm.mutex.Lock()
 	defer tm.mutex.Unlock()
 
-	now := time.Now()
+	now := tm.clock.Now()
 
 	for k, v := range tm.tokens {
 		if v.Sub(now) >= 0 {
@@ -49,7 +51,7 @@ func (tm *TokenManager) Add(id string, ttl time.Duration) {
 	tm.mutex.Lock()
 	defer tm.mutex.Unlock()
 
-	newExpirationTime := time.Now().Add(ttl)
+	newExpirationTime := tm.clock.Now().Add(ttl)
 
 	actualExpirationTime, found := tm.tokens[id]
 	if !found {
