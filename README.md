@@ -1,4 +1,10 @@
-# goaleasoluciones [![Build Status](https://travis-ci.org/aleasoluciones/goaleasoluciones.svg?branch=master)](https://travis-ci.org/aleasoluciones/goaleasoluciones) [![Coverage Status](https://img.shields.io/coveralls/aleasoluciones/goaleasoluciones.svg)](https://coveralls.io/r/aleasoluciones/goaleasoluciones?branch=master) [![GoDoc](https://godoc.org/github.com/aleasoluciones/goaleasoluciones?status.svg)](https://godoc.org/github.com/aleasoluciones/goaleasoluciones)
+# goaleasoluciones
+
+[![Build Status](https://travis-ci.org/aleasoluciones/goaleasoluciones.svg?branch=master)](https://travis-ci.org/aleasoluciones/goaleasoluciones)
+[![Coverage Status](https://img.shields.io/coveralls/aleasoluciones/goaleasoluciones.svg)](https://coveralls.io/r/aleasoluciones/goaleasoluciones?branch=master)
+[![Go Walker Documentation](https://img.shields.io/badge/Go%20Walker-API%20Documentation-blue.svg)](https://gowalker.org/github.com/aleasoluciones/goaleasoluciones)
+[![Licence](https://img.shields.io/badge/Licence-MIT-brightgreen.svg)](https://www.tldrlegal.com/l/mit)
+
 
 Common libraries for writing go services/applications.
 
@@ -16,10 +22,10 @@ $ go test -v ./...
 
 ## Documentation
 
-See https://godoc.org/github.com/aleasoluciones/goaleasoluciones for modules documentation.
+See https://gowalker.org/github.com/aleasoluciones/goaleasoluciones for modules documentation
 
 ##License
-(The MIT License)
+The MIT License (MIT)
 
 Copyright (c) 2014 Alea Soluciones SLL
 
