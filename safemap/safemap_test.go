@@ -70,3 +70,17 @@ func TestClose(t *testing.T) {
 		sm.Insert("key", "value")
 	})
 }
+
+func TestKeys(t *testing.T) {
+	t.Parallel()
+	sm := New()
+	sm.Insert("key", "value")
+	sm.Insert("key1", "value1")
+
+	result := sm.Keys()
+
+	assert.Len(t, result, 2)
+	assert.Contains(t, result, "key")
+	assert.Contains(t, result, "key1")
+
+}

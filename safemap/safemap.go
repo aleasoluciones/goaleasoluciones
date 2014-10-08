@@ -18,6 +18,7 @@ const (
 	insert
 	length
 	update
+	keys
 )
 
 type findResult struct {
@@ -46,6 +47,12 @@ func (sm SafeMap) run() {
 			command.result <- findResult{value, found}
 		case length:
 			command.result <- len(store)
+		case keys:
+			keys := make([]interface{}, 0)
+			for key, _ := range store {
+				keys = append(keys, key)
+			}
+			command.result <- keys
 		case update:
 			value, found := store[command.key]
 			store[command.key] = command.updater(value, found)
@@ -85,4 +92,10 @@ func (sm SafeMap) Close() map[interface{}]interface{} {
 	reply := make(chan map[interface{}]interface{})
 	sm <- commandData{action: end, data: reply}
 	return <-reply
+}
+
+func (sm SafeMap) Keys() []interface{} {
+	reply := make(chan interface{})
+	sm <- commandData{action: keys, result: reply}
+	return (<-reply).([]interface{})
 }
