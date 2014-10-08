@@ -9,19 +9,19 @@ import (
 
 func TestInitialLenIsZero(t *testing.T) {
 	t.Parallel()
-	assert.Equal(t, New().Len(), 0)
+	assert.Equal(t, NewSafeMap().Len(), 0)
 }
 
 func TestKeyNotFound(t *testing.T) {
 	t.Parallel()
-	result, found := New().Find("unknown_key")
+	result, found := NewSafeMap().Find("unknown_key")
 	assert.Nil(t, result)
 	assert.False(t, found)
 }
 
-func TestNewKeyInsertion(t *testing.T) {
+func TestNewSafeMapKeyInsertion(t *testing.T) {
 	t.Parallel()
-	sm := New()
+	sm := NewSafeMap()
 	sm.Insert("key", "value")
 	assert.Equal(t, sm.Len(), 1)
 	result, found := sm.Find("key")
@@ -31,7 +31,7 @@ func TestNewKeyInsertion(t *testing.T) {
 
 func TestDeleteAKey(t *testing.T) {
 	t.Parallel()
-	sm := New()
+	sm := NewSafeMap()
 	sm.Insert("key", "value")
 	sm.Delete("key")
 	result, found := sm.Find("key")
@@ -41,9 +41,9 @@ func TestDeleteAKey(t *testing.T) {
 
 func TestUpdateAnExistingKey(t *testing.T) {
 	t.Parallel()
-	sm := New()
+	sm := NewSafeMap()
 	sm.Insert("key", "value")
-	sm.Update("key", func(value interface{}, found bool) interface{} {
+	sm.Update("key", func(value Value, found bool) Value {
 		return value.(string) + "_updated"
 	})
 	result, found := sm.Find("key")
@@ -53,8 +53,8 @@ func TestUpdateAnExistingKey(t *testing.T) {
 
 func TestUpdateANonExistingKey(t *testing.T) {
 	t.Parallel()
-	sm := New()
-	sm.Update("key", func(value interface{}, found bool) interface{} {
+	sm := NewSafeMap()
+	sm.Update("key", func(value Value, found bool) Value {
 		return fmt.Sprintf("%s_updated", value)
 	})
 	result, found := sm.Find("key")
@@ -64,7 +64,7 @@ func TestUpdateANonExistingKey(t *testing.T) {
 
 func TestClose(t *testing.T) {
 	t.Parallel()
-	sm := New()
+	sm := NewSafeMap()
 	sm.Close()
 	assert.Panics(t, func() {
 		sm.Insert("key", "value")
@@ -73,7 +73,7 @@ func TestClose(t *testing.T) {
 
 func TestKeys(t *testing.T) {
 	t.Parallel()
-	sm := New()
+	sm := NewSafeMap()
 	sm.Insert("key", "value")
 	sm.Insert("key1", "value1")
 

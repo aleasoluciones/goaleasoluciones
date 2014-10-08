@@ -1,13 +1,15 @@
 package safemap
 
 type SafeMap chan commandData
+type Key interface{}
+type Value interface{}
 
 type commandData struct {
 	action  int
-	key     interface{}
-	value   interface{}
+	key     Key
+	value   Value
 	result  chan<- interface{}
-	data    chan<- map[interface{}]interface{}
+	data    chan<- map[Key]Value
 	updater UpdateFunc
 }
 
@@ -22,20 +24,20 @@ const (
 )
 
 type findResult struct {
-	value interface{}
+	value Value
 	found bool
 }
 
-type UpdateFunc func(interface{}, bool) interface{}
+type UpdateFunc func(Value, bool) Value
 
-func New() SafeMap {
+func NewSafeMap() SafeMap {
 	sm := make(SafeMap)
 	go sm.run()
 	return sm
 }
 
 func (sm SafeMap) run() {
-	store := make(map[interface{}]interface{})
+	store := make(map[Key]Value)
 	for command := range sm {
 		switch command.action {
 		case insert:
@@ -48,7 +50,7 @@ func (sm SafeMap) run() {
 		case length:
 			command.result <- len(store)
 		case keys:
-			keys := make([]interface{}, 0)
+			keys := make([]Key, 0)
 			for key, _ := range store {
 				keys = append(keys, key)
 			}
@@ -63,15 +65,15 @@ func (sm SafeMap) run() {
 	}
 }
 
-func (sm SafeMap) Insert(key interface{}, value interface{}) {
+func (sm SafeMap) Insert(key Key, value Value) {
 	sm <- commandData{action: insert, key: key, value: value}
 }
 
-func (sm SafeMap) Delete(key interface{}) {
+func (sm SafeMap) Delete(key Key) {
 	sm <- commandData{action: remove, key: key}
 }
 
-func (sm SafeMap) Find(key interface{}) (value interface{}, found bool) {
+func (sm SafeMap) Find(key Key) (value Value, found bool) {
 	reply := make(chan interface{})
 	sm <- commandData{action: find, key: key, result: reply}
 	result := (<-reply).(findResult)
@@ -84,18 +86,18 @@ func (sm SafeMap) Len() int {
 	return (<-reply).(int)
 }
 
-func (sm SafeMap) Update(key interface{}, updater UpdateFunc) {
+func (sm SafeMap) Update(key Key, updater UpdateFunc) {
 	sm <- commandData{action: update, key: key, updater: updater}
 }
 
-func (sm SafeMap) Close() map[interface{}]interface{} {
-	reply := make(chan map[interface{}]interface{})
+func (sm SafeMap) Close() map[Key]Value {
+	reply := make(chan map[Key]Value)
 	sm <- commandData{action: end, data: reply}
 	return <-reply
 }
 
-func (sm SafeMap) Keys() []interface{} {
+func (sm SafeMap) Keys() []Key {
 	reply := make(chan interface{})
 	sm <- commandData{action: keys, result: reply}
-	return (<-reply).([]interface{})
+	return (<-reply).([]Key)
 }
