@@ -4,10 +4,10 @@ type SafeMap chan commandData
 
 type commandData struct {
 	action  int
-	key     string
+	key     interface{}
 	value   interface{}
 	result  chan<- interface{}
-	data    chan<- map[string]interface{}
+	data    chan<- map[interface{}]interface{}
 	updater UpdateFunc
 }
 
@@ -34,7 +34,7 @@ func New() SafeMap {
 }
 
 func (sm SafeMap) run() {
-	store := make(map[string]interface{})
+	store := make(map[interface{}]interface{})
 	for command := range sm {
 		switch command.action {
 		case insert:
@@ -56,15 +56,15 @@ func (sm SafeMap) run() {
 	}
 }
 
-func (sm SafeMap) Insert(key string, value interface{}) {
+func (sm SafeMap) Insert(key interface{}, value interface{}) {
 	sm <- commandData{action: insert, key: key, value: value}
 }
 
-func (sm SafeMap) Delete(key string) {
+func (sm SafeMap) Delete(key interface{}) {
 	sm <- commandData{action: remove, key: key}
 }
 
-func (sm SafeMap) Find(key string) (value interface{}, found bool) {
+func (sm SafeMap) Find(key interface{}) (value interface{}, found bool) {
 	reply := make(chan interface{})
 	sm <- commandData{action: find, key: key, result: reply}
 	result := (<-reply).(findResult)
@@ -77,12 +77,12 @@ func (sm SafeMap) Len() int {
 	return (<-reply).(int)
 }
 
-func (sm SafeMap) Update(key string, updater UpdateFunc) {
+func (sm SafeMap) Update(key interface{}, updater UpdateFunc) {
 	sm <- commandData{action: update, key: key, updater: updater}
 }
 
-func (sm SafeMap) Close() map[string]interface{} {
-	reply := make(chan map[string]interface{})
+func (sm SafeMap) Close() map[interface{}]interface{} {
+	reply := make(chan map[interface{}]interface{})
 	sm <- commandData{action: end, data: reply}
 	return <-reply
 }
