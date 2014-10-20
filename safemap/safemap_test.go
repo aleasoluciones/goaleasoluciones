@@ -82,5 +82,4 @@ func TestKeys(t *testing.T) {
 	assert.Len(t, result, 2)
 	assert.Contains(t, result, "key")
 	assert.Contains(t, result, "key1")
-
 }
