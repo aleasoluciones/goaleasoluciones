@@ -41,6 +41,6 @@ func TestPeriodicFunctionNotCalledAfterTTL(t *testing.T) {
 	tm := TokenManager(&periodicFuncTimesCalled)
 	tm.Add("id", 2*time.Millisecond)
 
-	time.Sleep(3 * time.Millisecond)
+	time.Sleep(4 * time.Millisecond)
 	assert.Equal(t, 2, periodicFuncTimesCalled)
 }
