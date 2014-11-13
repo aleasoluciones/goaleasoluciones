@@ -3,6 +3,7 @@ package tryto_test
 import (
 	"errors"
 
+	"github.com/aleasoluciones/goaleasoluciones/mocks"
 	. "github.com/aleasoluciones/goaleasoluciones/tryto"
 
 	. "github.com/onsi/ginkgo"
@@ -10,29 +11,30 @@ import (
 )
 
 var _ = Describe("Try to", func() {
-	var wasCalledTimes, maximumAttempts, aResult int
+	var wasCalledTimes, aResult int
 
 	BeforeEach(func() {
 		wasCalledTimes = 0
-		maximumAttempts = 5
 		aResult = 42
 	})
 
 	Context("when wrapped func returns error", func() {
 		It("retries the amount of times", func() {
-			TryTo(func() (interface{}, error) {
+			retrier := NewRetrier()
+
+			retrier.RunRetrying(func() (interface{}, error) {
 				wasCalledTimes++
 				return 0, errors.New("an error")
-			}, maximumAttempts)
+			})
 
-			Expect(wasCalledTimes).To(Equal(maximumAttempts))
+			Expect(wasCalledTimes).To(Equal(retrier.MaximumAttempts))
 		})
 
 		It("returns result in the wrapped function", func() {
-			result, err := TryTo(func() (interface{}, error) {
+			result, err := NewRetrier().RunRetrying(func() (interface{}, error) {
 				wasCalledTimes++
 				return aResult, errors.New("an error")
-			}, maximumAttempts)
+			})
 
 			Expect(result.(int)).To(Equal(aResult))
 			Expect(err).To(HaveOccurred())
@@ -41,10 +43,10 @@ var _ = Describe("Try to", func() {
 
 	Context("when wrapped func is successful at first attempt", func() {
 		It("tries only once", func() {
-			TryTo(func() (interface{}, error) {
+			NewRetrier().RunRetrying(func() (interface{}, error) {
 				wasCalledTimes++
 				return 0, nil
-			}, maximumAttempts)
+			})
 
 			Expect(wasCalledTimes).To(Equal(1))
 		})
@@ -52,28 +54,43 @@ var _ = Describe("Try to", func() {
 
 	Context("when wrapped func is successful after some tries", func() {
 		It("retries several times", func() {
-			TryTo(func() (interface{}, error) {
+			NewRetrier().RunRetrying(func() (interface{}, error) {
 				if wasCalledTimes == 2 {
 					return aResult, nil
 				}
 				wasCalledTimes++
 				return 0, errors.New("an error")
-			}, maximumAttempts)
+			})
 
 			Expect(wasCalledTimes).To(Equal(2))
 		})
 
 		It("returns last result", func() {
-			result, err := TryTo(func() (interface{}, error) {
+			result, err := NewRetrier().RunRetrying(func() (interface{}, error) {
 				if wasCalledTimes == 2 {
 					return aResult, nil
 				}
 				wasCalledTimes++
 				return 0, errors.New("an error")
-			}, maximumAttempts)
+			})
 
 			Expect(result.(int)).To(Equal(aResult))
 			Expect(err).ToNot(HaveOccurred())
+		})
+	})
+
+	FContext("when wrapped func returns error and lablabla", func() {
+		It("sleep FOO", func() {
+			sleeper := new(mocks.Sleeper)
+			retrier := NewRetrierWithSleeper(sleeper)
+			sleeper.On("Sleep", retrier.Interval).Return(nil)
+
+			retrier.RunRetrying(func() (interface{}, error) {
+				wasCalledTimes++
+				return 0, errors.New("an error")
+			})
+
+			sleeper.AssertNumberOfCalls(GinkgoT(), "Sleep", retrier.MaximumAttempts-1)
 		})
 	})
 })
