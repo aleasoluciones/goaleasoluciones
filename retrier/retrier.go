@@ -17,14 +17,6 @@ type Retrier struct {
 	Interval        time.Duration
 }
 
-func NewRetrier() *Retrier {
-	return &Retrier{
-		sleeper:         clock.NewSleeper(),
-		MaximumAttempts: maximumAttempts,
-		Interval:        interval,
-	}
-}
-
 func NewRetrierWithSleeper(sleeper clock.Sleeper) *Retrier {
 	return &Retrier{
 		sleeper:         sleeper,
