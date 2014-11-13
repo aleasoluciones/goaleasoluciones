@@ -9,41 +9,50 @@ type Clock interface {
 	Today() (year int, month time.Month, day int)
 }
 
-type realClock struct{}
+type clock struct{}
 
-func NewClock() *realClock {
-	return &realClock{}
+func NewClock() Clock {
+	return &clock{}
 }
 
-func (clock *realClock) Now() time.Time {
+func (c *clock) Now() time.Time {
 	return time.Now()
 }
 
-func (clock *realClock) Today() (year int, month time.Month, day int) {
+func (c *clock) Today() (year int, month time.Month, day int) {
 	return time.Now().Date()
 }
 
-type Sleeper struct {
-	clock   Clock
-	sleepFn func(duration time.Duration)
+type Sleeper interface {
+	Sleep(duration time.Duration)
+	SleepUntil(until time.Time)
 }
 
-func NewSleeper() *Sleeper {
-	return &Sleeper{
-		clock:   NewClock(),
-		sleepFn: time.Sleep,
+type sleeper struct {
+	clock Clock
+}
+
+func NewSleeper() Sleeper {
+	return &sleeper{
+		clock: NewClock(),
 	}
 }
 
-func (sleeper *Sleeper) Sleep(duration time.Duration) {
-	sleeper.sleepFn(duration)
+func NewSleeperWithClock(clock Clock) Sleeper {
+	return &sleeper{
+		clock: clock,
+	}
 }
 
-func (sleeper *Sleeper) SleepUntil(until time.Time) {
-	now := sleeper.clock.Now()
+func (s *sleeper) Sleep(duration time.Duration) {
+	time.Sleep(duration)
+}
+
+func (s *sleeper) SleepUntil(until time.Time) {
+	now := s.clock.Now()
 	time_to_sleep := until.Sub(now)
 
 	if time_to_sleep > 0*time.Second {
-		sleeper.sleepFn(time_to_sleep)
+		s.Sleep(time_to_sleep)
 	}
 }

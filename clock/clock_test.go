@@ -1,8 +1,10 @@
-package clock
+package clock_test
 
 import (
 	"testing"
 	"time"
+
+	. "github.com/aleasoluciones/goaleasoluciones/clock"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -47,26 +49,20 @@ func (clock *FakeClock) Today() (year int, month time.Month, day int) {
 
 func TestSleeperSleepUntilIfDurationIsAheadOfCurrentTime(t *testing.T) {
 	t.Parallel()
-	sleeper := NewSleeper()
-	clock := &FakeClock{}
-	sleeper.clock = clock
-	var sleepFnCalled time.Duration
-	sleeper.sleepFn = func(duration time.Duration) { sleepFnCalled = duration }
+	sleeper := NewSleeperWithClock(&FakeClock{})
 
-	sleeper.SleepUntil(time.Date(2013, time.September, 9, 23, 0, 5, 0, time.UTC))
+	start := time.Now()
+	sleeper.SleepUntil(time.Date(2013, time.September, 9, 23, 0, 1, 0, time.UTC))
 
-	assert.Equal(t, sleepFnCalled, 5*time.Second)
+	assert.WithinDuration(t, time.Now(), start, 2*time.Second)
 }
 
 func TestSleeperDoNotSleepUntilIfDurationIsBehindOfCurrentTime(t *testing.T) {
 	t.Parallel()
-	sleeper := NewSleeper()
-	clock := &FakeClock{}
-	sleeper.clock = clock
-	sleepFnCalled := false
-	sleeper.sleepFn = func(duration time.Duration) { sleepFnCalled = true }
+	sleeper := NewSleeperWithClock(&FakeClock{})
 
+	start := time.Now()
 	sleeper.SleepUntil(time.Date(2013, time.September, 9, 22, 0, 0, 0, time.UTC))
 
-	assert.False(t, sleepFnCalled)
+	assert.WithinDuration(t, time.Now(), start, 1*time.Second)
 }
