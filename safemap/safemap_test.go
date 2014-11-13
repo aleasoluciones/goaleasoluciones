@@ -1,8 +1,10 @@
-package safemap
+package safemap_test
 
 import (
 	"fmt"
 	"testing"
+
+	. "github.com/aleasoluciones/goaleasoluciones/safemap"
 
 	"github.com/stretchr/testify/assert"
 )

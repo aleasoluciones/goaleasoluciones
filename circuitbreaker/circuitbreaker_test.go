@@ -1,8 +1,10 @@
-package circuitbreaker
+package circuitbreaker_test
 
 import (
 	"testing"
 	"time"
+
+	. "github.com/aleasoluciones/goaleasoluciones/circuitbreaker"
 
 	"github.com/stretchr/testify/assert"
 )
