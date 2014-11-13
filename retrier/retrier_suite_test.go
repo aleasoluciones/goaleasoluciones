@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestTryto(t *testing.T) {
+func TestRetrier(t *testing.T) {
 	RegisterFailHandler(Fail)
 	RunSpecs(t, "Retrier Suite")
 }
