@@ -1,4 +1,4 @@
-package tryto_test
+package retrier_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -9,5 +9,5 @@ import (
 
 func TestTryto(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Tryto Suite")
+	RunSpecs(t, "Retrier Suite")
 }

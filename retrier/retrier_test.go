@@ -1,27 +1,32 @@
-package tryto_test
+package retrier_test
 
 import (
 	"errors"
 
 	"github.com/aleasoluciones/goaleasoluciones/mocks"
-	. "github.com/aleasoluciones/goaleasoluciones/tryto"
+	. "github.com/aleasoluciones/goaleasoluciones/retrier"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Try to", func() {
-	var wasCalledTimes, aResult int
+var _ = Describe("Retrier", func() {
+	var (
+		wasCalledTimes, aResult int
+		sleeper                 *mocks.Sleeper
+		retrier                 *Retrier
+	)
 
 	BeforeEach(func() {
 		wasCalledTimes = 0
 		aResult = 42
+		sleeper = new(mocks.Sleeper)
+		retrier = NewRetrierWithSleeper(sleeper)
+		sleeper.On("Sleep", retrier.Interval).Return(nil)
 	})
 
 	Context("when wrapped func returns error", func() {
 		It("retries the amount of times", func() {
-			retrier := NewRetrier()
-
 			retrier.RunRetrying(func() (interface{}, error) {
 				wasCalledTimes++
 				return 0, errors.New("an error")
@@ -31,7 +36,7 @@ var _ = Describe("Try to", func() {
 		})
 
 		It("returns result in the wrapped function", func() {
-			result, err := NewRetrier().RunRetrying(func() (interface{}, error) {
+			result, err := retrier.RunRetrying(func() (interface{}, error) {
 				wasCalledTimes++
 				return aResult, errors.New("an error")
 			})
@@ -43,7 +48,7 @@ var _ = Describe("Try to", func() {
 
 	Context("when wrapped func is successful at first attempt", func() {
 		It("tries only once", func() {
-			NewRetrier().RunRetrying(func() (interface{}, error) {
+			retrier.RunRetrying(func() (interface{}, error) {
 				wasCalledTimes++
 				return 0, nil
 			})
@@ -54,7 +59,7 @@ var _ = Describe("Try to", func() {
 
 	Context("when wrapped func is successful after some tries", func() {
 		It("retries several times", func() {
-			NewRetrier().RunRetrying(func() (interface{}, error) {
+			retrier.RunRetrying(func() (interface{}, error) {
 				if wasCalledTimes == 2 {
 					return aResult, nil
 				}
@@ -66,7 +71,7 @@ var _ = Describe("Try to", func() {
 		})
 
 		It("returns last result", func() {
-			result, err := NewRetrier().RunRetrying(func() (interface{}, error) {
+			result, err := retrier.RunRetrying(func() (interface{}, error) {
 				if wasCalledTimes == 2 {
 					return aResult, nil
 				}
@@ -79,34 +84,27 @@ var _ = Describe("Try to", func() {
 		})
 	})
 
-	FContext("when retrier support sleeper", func() {
-			Context("when wrapped func returns error", func(){
-				It("retries after period of time", func(){
-					sleeper := new(mocks.Sleeper)
-					retrier := NewRetrierWithSleeper(sleeper)
-					sleeper.On("Sleep", retrier.Interval).Return(nil)
-
-					retrier.RunRetrying(func() (interface{}, error) {
-						wasCalledTimes++
-						return 0, errors.New("an error")
-					})
-
-					sleeper.AssertNumberOfCalls(GinkgoT(), "Sleep", retrier.MaximumAttempts-1)
+	Context("when retrier support sleeper", func() {
+		Context("when wrapped func returns error", func() {
+			It("retries after period of time", func() {
+				retrier.RunRetrying(func() (interface{}, error) {
+					wasCalledTimes++
+					return 0, errors.New("an error")
 				})
-			})
-			Context("when wrapped func is successful at first attempt", func(){
-				It("do not use sleeper", func() {
-						sleeper := new(mocks.Sleeper)
-						retrier := NewRetrierWithSleeper(sleeper)
-						sleeper.On("Sleep", retrier.Interval).Return(nil)
 
-						retrier.RunRetrying(func() (interface{}, error) {
-							wasCalledTimes++
-							return 0, errors.New("an error")
-						})
-
-						sleeper.AssertNotCalled(GinkgoT(), "Sleep")
-					})
+				sleeper.AssertNumberOfCalls(GinkgoT(), "Sleep", retrier.MaximumAttempts-1)
 			})
+		})
+
+		Context("when wrapped func is successful at first attempt", func() {
+			It("do not use sleeper", func() {
+				retrier.RunRetrying(func() (interface{}, error) {
+					wasCalledTimes++
+					return 0, errors.New("an error")
+				})
+
+				sleeper.AssertNotCalled(GinkgoT(), "Sleep")
+			})
+		})
 	})
 })

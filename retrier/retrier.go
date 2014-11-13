@@ -1,4 +1,4 @@
-package tryto
+package retrier
 
 import (
 	"time"
