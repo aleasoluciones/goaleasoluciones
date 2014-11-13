@@ -79,18 +79,34 @@ var _ = Describe("Try to", func() {
 		})
 	})
 
-	FContext("when wrapped func returns error and lablabla", func() {
-		It("sleep FOO", func() {
-			sleeper := new(mocks.Sleeper)
-			retrier := NewRetrierWithSleeper(sleeper)
-			sleeper.On("Sleep", retrier.Interval).Return(nil)
+	FContext("when retrier support sleeper", func() {
+			Context("when wrapped func returns error", func(){
+				It("retries after period of time", func(){
+					sleeper := new(mocks.Sleeper)
+					retrier := NewRetrierWithSleeper(sleeper)
+					sleeper.On("Sleep", retrier.Interval).Return(nil)
 
-			retrier.RunRetrying(func() (interface{}, error) {
-				wasCalledTimes++
-				return 0, errors.New("an error")
+					retrier.RunRetrying(func() (interface{}, error) {
+						wasCalledTimes++
+						return 0, errors.New("an error")
+					})
+
+					sleeper.AssertNumberOfCalls(GinkgoT(), "Sleep", retrier.MaximumAttempts-1)
+				})
 			})
+			Context("when wrapped func is successful at first attempt", func(){
+				It("do not use sleeper", func() {
+						sleeper := new(mocks.Sleeper)
+						retrier := NewRetrierWithSleeper(sleeper)
+						sleeper.On("Sleep", retrier.Interval).Return(nil)
 
-			sleeper.AssertNumberOfCalls(GinkgoT(), "Sleep", retrier.MaximumAttempts-1)
-		})
+						retrier.RunRetrying(func() (interface{}, error) {
+							wasCalledTimes++
+							return 0, errors.New("an error")
+						})
+
+						sleeper.AssertNotCalled(GinkgoT(), "Sleep")
+					})
+			})
 	})
 })
