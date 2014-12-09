@@ -33,7 +33,7 @@ func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *
 	return &tm
 }
 
-func (tm TokenManager) executePeriodicFunc() {
+func (tm *TokenManager) executePeriodicFunc() {
 	tm.mutex.Lock()
 	defer tm.mutex.Unlock()
 
