@@ -70,7 +70,7 @@ func (sm SafeMap) Keys() []Key {
 	reply := make(chan []Key)
 	sm <- func(st store) {
 		keys := make([]Key, 0)
-		for key, _ := range st {
+		for key := range st {
 			keys = append(keys, key)
 		}
 		reply <- keys
