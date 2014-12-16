@@ -32,7 +32,6 @@ func NewScheduledTask(task func(), periode, ttl time.Duration) *ScheduledTask {
 func (scheduler *ScheduledTask) run() {
 	defer close(scheduler.done)
 	scheduledUntil := scheduler.clock.Now().Add(scheduler.ttl)
-	log.Println("Scheduling until", scheduledUntil)
 	for {
 		now := scheduler.clock.Now()
 		if scheduler.ttl != 0 && now.After(scheduledUntil) {
@@ -41,9 +40,6 @@ func (scheduler *ScheduledTask) run() {
 		nextExecution := now.Add(scheduler.periode)
 
 		scheduler.task()
-
-		log.Println("Next execution ", nextExecution)
-		log.Println("Waiting", (nextExecution.Sub(scheduler.clock.Now())))
 
 		select {
 		case <-time.After(nextExecution.Sub(scheduler.clock.Now())):
