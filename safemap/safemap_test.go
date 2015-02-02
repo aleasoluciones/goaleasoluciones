@@ -41,6 +41,15 @@ func TestDeleteAKey(t *testing.T) {
 	assert.False(t, found)
 }
 
+func TestDeleteANonExistingKey(t *testing.T) {
+	t.Parallel()
+	sm := NewSafeMap()
+	sm.Delete("key")
+	result, found := sm.Find("key")
+	assert.Nil(t, result)
+	assert.False(t, found)
+}
+
 func TestUpdateAnExistingKey(t *testing.T) {
 	t.Parallel()
 	sm := NewSafeMap()
