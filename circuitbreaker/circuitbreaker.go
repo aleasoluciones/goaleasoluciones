@@ -4,12 +4,17 @@
 
 package circuitbreaker
 
-import "time"
+import (
+	"time"
+
+	"github.com/aleasoluciones/goaleasoluciones/clock"
+)
 
 type Circuit struct {
 	numErrors int
 	commands  chan commandData
 	resetTime time.Duration
+	clock     clock.Clock
 }
 
 type commandData struct {
@@ -26,14 +31,19 @@ const (
 	RESET_FINISHED
 )
 
-func NewCircuit(numErrors int, resetTime time.Duration) *Circuit {
+func NewCircuitWithClock(numErrors int, resetTime time.Duration, clock clock.Clock) *Circuit {
 	circuit := Circuit{
 		numErrors: numErrors,
 		resetTime: resetTime,
 		commands:  make(chan commandData),
+		clock:     clock,
 	}
 	go circuit.run()
 	return &circuit
+}
+
+func NewCircuit(numErrors int, resetTime time.Duration) *Circuit {
+	return NewCircuitWithClock(numErrors, resetTime, clock.NewClock())
 }
 
 func (crt Circuit) run() {
