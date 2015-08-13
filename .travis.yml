@@ -8,6 +8,7 @@ go:
 
 before_install:
   - go get github.com/stretchr/testify/assert
+  - make deps
 
 script:
   - go vet ./...
