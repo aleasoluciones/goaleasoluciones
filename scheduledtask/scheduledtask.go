@@ -20,17 +20,20 @@ type ScheduledTask struct {
 	clock   clock.Clock
 }
 
-func NewScheduledTask(task func(), periode, ttl time.Duration) *ScheduledTask {
+func NewScheduledTaskWithClock(task func(), periode, ttl time.Duration, clock clock.Clock) *ScheduledTask {
 	scheduledTask := ScheduledTask{
 		task:    task,
 		periode: periode,
 		ttl:     ttl,
 		finish:  make(chan struct{}),
 		done:    make(chan struct{}),
-		clock:   clock.NewClock(),
+		clock:   clock,
 	}
 	go scheduledTask.run()
 	return &scheduledTask
+}
+func NewScheduledTask(task func(), periode, ttl time.Duration) *ScheduledTask {
+	return NewScheduledTaskWithClock(task, periode, ttl, clock.NewClock())
 }
 
 func (scheduler *ScheduledTask) run() {
