@@ -21,13 +21,13 @@ type TokenManager struct {
 	clock        clock.Clock
 }
 
-func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *TokenManager {
+func NewTokenManagerWithClock(periode, ttl time.Duration, periodicFunc func(id string), clock clock.Clock) *TokenManager {
 	tm := TokenManager{
 		periode:      periode,
 		ttl:          ttl,
 		periodicFunc: periodicFunc,
 		tokens:       make(map[string]time.Time),
-		clock:        clock.NewClock(),
+		clock:        clock,
 	}
 
 	scheduledtask.NewScheduledTask(
@@ -35,6 +35,10 @@ func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *
 		tm.periode,
 		tm.ttl)
 	return &tm
+}
+
+func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *TokenManager {
+	return NewTokenManagerWithClock(periode, ttl, periodicFunc, clock.NewClock())
 }
 
 func (tm *TokenManager) executePeriodicFunc() {
