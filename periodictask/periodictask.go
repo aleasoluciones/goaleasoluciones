@@ -8,16 +8,33 @@ import (
 	"log"
 	"time"
 
+	"github.com/facebookgo/clock"
 	"github.com/gorhill/cronexpr"
 )
 
-func PeriodicTask(task func(), cronTime string) {
+type PeriodicTask struct {
+	task     func()
+	cronTime string
+	clock    clock.Clock
+}
+
+func NewWithClock(task func(), cronTime string, clock clock.Clock) *PeriodicTask {
+	pt := PeriodicTask{task, cronTime, clock}
+	go pt.run()
+	return &pt
+}
+
+func New(task func(), cronTime string) *PeriodicTask {
+	return NewWithClock(task, cronTime, clock.New())
+}
+
+func (pt *PeriodicTask) run() {
 	for {
-		nextTime := cronexpr.MustParse(cronTime).Next(time.Now())
-		log.Println("Next execution", nextTime, task)
+		nextTime := cronexpr.MustParse(pt.cronTime).Next(time.Now())
+		log.Println("Next execution", nextTime, pt.task)
 		time.Sleep(nextTime.Sub(time.Now()))
 		log.Println("Execution start")
-		task()
+		pt.task()
 		log.Println("Execution end")
 	}
 }
