@@ -8,12 +8,12 @@ import (
 	"testing"
 	"time"
 
-	"github.com/facebookgo/clock"
+	"github.com/aleasoluciones/goaleasoluciones/periodictask"
 
-	. "github.com/aleasoluciones/goaleasoluciones/periodictask"
+	"github.com/stretchr/testify/assert"
 )
 
-func TestSkeleton(t *testing.T) {
+func TestExecutionEachSecond(t *testing.T) {
 	t.Parallel()
 
 	var counter int = 0
@@ -21,7 +21,8 @@ func TestSkeleton(t *testing.T) {
 		counter = counter + 1
 	}
 
-	mockClock := clock.NewMock()
-	NewWithClock(counterFunc, "* * * * * *", mockClock)
-	mockClock.Add(2 * time.Hour)
+	periodictask.New(counterFunc, "* * * * * * *").Run()
+	time.Sleep(3 * time.Second)
+	assert.True(t, counter >= 2)
+	assert.True(t, counter <= 3)
 }
