@@ -2,13 +2,13 @@
 // source code is governed by a MIT-style license that can be found in the
 // LICENSE file.
 
-package periodictask_test
+package crontask_test
 
 import (
 	"testing"
 	"time"
 
-	"github.com/aleasoluciones/goaleasoluciones/periodictask"
+	"github.com/aleasoluciones/goaleasoluciones/crontask"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -21,7 +21,7 @@ func TestExecutionEachSecond(t *testing.T) {
 		counter = counter + 1
 	}
 
-	periodictask.New(counterFunc, "* * * * * * *").Run()
+	crontask.New(counterFunc, "* * * * * * *").Run()
 	time.Sleep(3 * time.Second)
 	assert.True(t, counter >= 2)
 	assert.True(t, counter <= 3)

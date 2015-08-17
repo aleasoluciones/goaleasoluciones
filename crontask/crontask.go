@@ -2,7 +2,7 @@
 // source code is governed by a MIT-style license that can be found in the
 // LICENSE file.
 
-package periodictask
+package crontask
 
 import (
 	"log"
@@ -11,24 +11,23 @@ import (
 	"github.com/gorhill/cronexpr"
 )
 
-type PeriodicTask struct {
+type CronTask struct {
 	task     func()
 	cronTime string
 }
 
-func New(task func(), cronTime string) *PeriodicTask {
-	pt := PeriodicTask{task, cronTime}
-	return &pt
+func New(task func(), cronTime string) *CronTask {
+	return &CronTask{task, cronTime}
 }
 
-func (pt *PeriodicTask) Run() {
+func (t *CronTask) Run() {
 	go func() {
 		for {
-			nextTime := cronexpr.MustParse(pt.cronTime).Next(time.Now())
-			log.Println("Next execution", nextTime, pt.task)
+			nextTime := cronexpr.MustParse(t.cronTime).Next(time.Now())
+			log.Println("Next execution", nextTime, t.task)
 			time.Sleep(nextTime.Sub(time.Now()))
 			log.Println("Execution start")
-			pt.task()
+			t.task()
 			log.Println("Execution end")
 		}
 	}()
