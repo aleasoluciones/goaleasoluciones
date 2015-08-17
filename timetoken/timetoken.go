@@ -8,7 +8,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/aleasoluciones/goaleasoluciones/clock"
 	"github.com/aleasoluciones/goaleasoluciones/scheduledtask"
 )
 
@@ -18,16 +17,14 @@ type TokenManager struct {
 	periodicFunc func(id string)
 	tokens       map[string]time.Time
 	mutex        sync.Mutex
-	clock        clock.Clock
 }
 
-func NewTokenManagerWithClock(periode, ttl time.Duration, periodicFunc func(id string), clock clock.Clock) *TokenManager {
+func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *TokenManager {
 	tm := TokenManager{
 		periode:      periode,
 		ttl:          ttl,
 		periodicFunc: periodicFunc,
 		tokens:       make(map[string]time.Time),
-		clock:        clock,
 	}
 
 	scheduledtask.NewScheduledTask(
@@ -37,15 +34,11 @@ func NewTokenManagerWithClock(periode, ttl time.Duration, periodicFunc func(id s
 	return &tm
 }
 
-func NewTokenManager(periode, ttl time.Duration, periodicFunc func(id string)) *TokenManager {
-	return NewTokenManagerWithClock(periode, ttl, periodicFunc, clock.NewClock())
-}
-
 func (tm *TokenManager) executePeriodicFunc() {
 	tm.mutex.Lock()
 	defer tm.mutex.Unlock()
 
-	now := tm.clock.Now()
+	now := time.Now()
 
 	for k, v := range tm.tokens {
 		if v.Sub(now) >= 0 {
@@ -60,7 +53,7 @@ func (tm *TokenManager) Add(id string, ttl time.Duration) {
 	tm.mutex.Lock()
 	defer tm.mutex.Unlock()
 
-	newExpirationTime := tm.clock.Now().Add(ttl)
+	newExpirationTime := time.Now().Add(ttl)
 
 	actualExpirationTime, found := tm.tokens[id]
 	if !found {
