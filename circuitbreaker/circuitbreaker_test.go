@@ -13,8 +13,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const (
+	TEST_TICK = 200 * time.Microsecond
+)
+
 func newCircuit() *Circuit {
-	return NewCircuit(3, 100*time.Microsecond)
+	return NewCircuit(3, TEST_TICK)
 }
 
 func TestOpenWhenItHasTheNumberOfConfiguredErrors(t *testing.T) {
@@ -59,5 +63,6 @@ func TestClosedWhenTheCircuitHasBeenResetAsTimeExpired(t *testing.T) {
 }
 
 func waitUntilReset() {
-	time.Sleep(100 * time.Microsecond)
+	time.Sleep(TEST_TICK)
+	time.Sleep(50 * time.Microsecond)
 }
