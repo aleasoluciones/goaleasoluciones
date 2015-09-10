@@ -1,2 +1,2 @@
-// AleaSoluciones's common libraries for writing go services/applications.
+// Package goaleasoluciones AleaSoluciones's common libraries for writing go services/applications.
 package goaleasoluciones
