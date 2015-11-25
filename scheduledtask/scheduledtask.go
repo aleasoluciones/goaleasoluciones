@@ -45,11 +45,9 @@ func (scheduler *ScheduledTask) run() {
 		case <-time.After(nextExecution.Sub(time.Now())):
 			continue
 		case <-scheduler.finish:
-			log.Println("Quiting")
 			return
 		}
 	}
-	log.Println("TTL reached")
 }
 
 func (scheduler *ScheduledTask) Stop() {
