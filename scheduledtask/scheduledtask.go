@@ -5,7 +5,6 @@
 package scheduledtask
 
 import (
-	"log"
 	"time"
 )
 
