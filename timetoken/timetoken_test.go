@@ -13,40 +13,50 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+const (
+	ZERO_TTL_FOR_TOKEN_MANAGER = 0*time.Millisecond
+	ONE_CYCLE_FOR_TOKEN_MANAGER = 700 * time.Millisecond
+)
+
 func tokenManager(periodicFuncTimesCalled *int) *TokenManager {
-	return NewTokenManager(1*time.Millisecond, 3*time.Millisecond, func(id string) {
+	return NewTokenManager(ONE_CYCLE_FOR_TOKEN_MANAGER, ZERO_TTL_FOR_TOKEN_MANAGER, func(id string) {
 		*periodicFuncTimesCalled += 1
 	})
 }
 
-func TestPeriodicFunctionCalledUntilTTL(t *testing.T) {
+func TestPeriodicFunctionCalledUntilTokenTTL(t *testing.T) {
 	t.Parallel()
 	periodicFuncTimesCalled := 0
 	tm := tokenManager(&periodicFuncTimesCalled)
-	tm.Add("id", 3*time.Millisecond)
-	time.Sleep(2 * time.Millisecond)
+	var tokenTTL = 2 * ONE_CYCLE_FOR_TOKEN_MANAGER
+	tm.Add("id", tokenTTL)
+	time.Sleep(tokenTTL + 50*time.Millisecond)
 	assert.Equal(t, 2, periodicFuncTimesCalled)
 }
 
-func TestPeriodicFunctionCalledEveryPeriodeUntilTTL(t *testing.T) {
+func TestPeriodicFunctionCalledEveryPeriodeUntilTokenTTL(t *testing.T) {
 	t.Parallel()
 	periodicFuncTimesCalled := 0
 	tm := tokenManager(&periodicFuncTimesCalled)
-	tm.Add("id", 3*time.Millisecond)
-
-	time.Sleep(1 * time.Millisecond)
+	var tokenTTL = 3 * ONE_CYCLE_FOR_TOKEN_MANAGER
+	var lessThanOneCycle = ONE_CYCLE_FOR_TOKEN_MANAGER - 100 * time.Millisecond
+	tm.Add("id", tokenTTL)
+	time.Sleep(lessThanOneCycle)
 	assert.Equal(t, 1, periodicFuncTimesCalled)
-
-	time.Sleep(1 * time.Millisecond)
+	time.Sleep(lessThanOneCycle)
 	assert.Equal(t, 2, periodicFuncTimesCalled)
+	time.Sleep(lessThanOneCycle)
+	assert.Equal(t, 3, periodicFuncTimesCalled)
+	time.Sleep(lessThanOneCycle)
+	assert.Equal(t, 3, periodicFuncTimesCalled)
 }
 
-func TestPeriodicFunctionNotCalledAfterTTL(t *testing.T) {
+func TestPeriodicFunctionNotCalledAfterTokenTTL(t *testing.T) {
 	t.Parallel()
 	periodicFuncTimesCalled := 0
 	tm := tokenManager(&periodicFuncTimesCalled)
-	tm.Add("id", 2*time.Millisecond)
-
-	time.Sleep(4 * time.Millisecond)
-	assert.Equal(t, 2, periodicFuncTimesCalled)
+	var tokenTTL = 1 * ONE_CYCLE_FOR_TOKEN_MANAGER
+	tm.Add("id", tokenTTL)
+	time.Sleep(2 * tokenTTL)
+	assert.Equal(t, 1, periodicFuncTimesCalled)
 }
