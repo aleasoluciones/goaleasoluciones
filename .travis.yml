@@ -12,6 +12,5 @@ before_install:
   - make deps
 
 script:
-  - golint
   - make build
   - make test
