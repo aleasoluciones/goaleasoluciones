@@ -24,7 +24,7 @@ func (t *CronTask) Run() {
 	go func() {
 		for {
 			nextTime := cronexpr.MustParse(t.cronTime).Next(time.Now())
-			log.Println("Next execution", nextTime, t.task)
+			log.Println("Next execution", nextTime)
 			time.Sleep(nextTime.Sub(time.Now()))
 			log.Println("Execution start")
 			t.task()
