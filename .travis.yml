@@ -12,7 +12,6 @@ before_install:
   - make deps
 
 script:
-  - go vet ./...
   - golint
   - make build
   - make test
