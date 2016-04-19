@@ -6,11 +6,5 @@ go:
 
 sudo: false
 
-before_install:
-  - go get github.com/stretchr/testify/assert
-  - go get -u github.com/golang/lint/golint
-  - make deps
-
 script:
-  - make build
-  - make test
+  - make all
