@@ -1,0 +1,6 @@
+{
+	"ImportPath": "github.com/aleasoluciones/goaleasoluciones",
+	"GoVersion": "go1.9",
+	"GodepVersion": "v79",
+	"Deps": []
+}
