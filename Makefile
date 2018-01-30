@@ -14,7 +14,7 @@ initialize_deps:
 	go get -d -v github.com/onsi/ginkgo
 	go get -d -v github.com/onsi/gomega
 	go get -v github.com/golang/lint/golint
-	godep save
+	godep save ./...
 
 update_deps:
 	godep get -d -v ./...
