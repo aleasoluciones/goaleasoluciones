@@ -17,11 +17,11 @@ initialize_deps:
 	godep save ./...
 
 update_deps:
-	godep get -d -v ./...
-	godep get -d -v github.com/stretchr/testify/assert
-	godep get -d -v github.com/onsi/ginkgo
-	godep get -d -v github.com/onsi/gomega
-	godep get -v golang.org/x/lint/golint
+	godep go install -v ./...
+	godep go install -v github.com/stretchr/testify/assert
+	godep go install -v github.com/onsi/ginkgo
+	godep go install -v github.com/onsi/gomega
+	godep go install -v golang.org/x/lint/golint
 	godep update ./...
 
 test:
