@@ -1,3 +1,8 @@
+2019-06-11
+==========
+* Internal: Update logger. Now it does not panic if SENTRY_DSN is not define. 
+            When LogError2Sentry is called, it logs the error only and not publish to Sentry
+
 2018-10-29
 ==========
 * Internal: Update go version 1.10 and 1.11
