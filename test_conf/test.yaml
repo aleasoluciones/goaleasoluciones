@@ -1,0 +1,4 @@
+an_existing_integer_value: 42
+an_existing_not_integer_value: "i am not an integer"
+an_existing_boolean_value: true
+an_existing_not_boolean_value: "i am not a boolean"
