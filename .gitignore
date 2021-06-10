@@ -32,6 +32,7 @@ _testmain.go
 
 ### Vim ###
 .*.sw[po]
+tags
 
 # Exclude vendor directory (godep dependency manager tool)
 vendor
