@@ -1,6 +1,6 @@
 # goaleasoluciones
 
-[![Build Status](https://travis-ci.org/aleasoluciones/goaleasoluciones.svg?branch=master)](https://travis-ci.org/aleasoluciones/goaleasoluciones)
+[![Build Status](https://travis-ci.com/aleasoluciones/goaleasoluciones.svg?branch=master)](https://travis-ci.com/aleasoluciones/goaleasoluciones)
 [![Go Walker Documentation](https://img.shields.io/badge/Go%20Walker-API%20Documentation-blue.svg)](https://gowalker.org/github.com/aleasoluciones/goaleasoluciones)
 [![Licence](https://img.shields.io/badge/Licence-MIT-brightgreen.svg)](https://www.tldrlegal.com/l/mit)
 
@@ -23,7 +23,7 @@ $ go test -v ./...
 
 See https://gowalker.org/github.com/aleasoluciones/goaleasoluciones for modules documentation
 
-##License
+## License
 The MIT License (MIT)
 
 Copyright (c) 2014 Alea Soluciones SLL
