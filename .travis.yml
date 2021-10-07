@@ -7,12 +7,16 @@ sudo: false
 
 # safelist branch to build
 branches:
-  only:
-    - master
+ only:
+  - master
 
 script:
-  - make jenkins
+ - make jenkins
 
 notifications:
-  email:
+ email:
   - bifer@alea-soluciones.com
+
+install:
+ - sudo apt-get update
+ - sudo apt-get install --reinstall ca-certificates
