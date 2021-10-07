@@ -18,5 +18,5 @@ notifications:
   - bifer@alea-soluciones.com
 
 install:
- - sudo apt-get update
- - sudo apt-get install --reinstall ca-certificates
+ - sudo apt update
+ - sudo apt install ca-certificates libgnutls30 -y
