@@ -1,7 +1,7 @@
 language: go
 go:
  - 1.11.x
- - master
+ - 1.17.x
 
 sudo: false
 
@@ -9,6 +9,7 @@ sudo: false
 branches:
  only:
   - master
+  - 1.17
 
 script:
  - make jenkins
