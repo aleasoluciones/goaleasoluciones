@@ -1,22 +1,20 @@
+os: linux
+
+dist: focal
+
 language: go
+
 go:
- - 1.11.x
- - master
+  - 1.17.x
 
-sudo: false
-
-# safelist branch to build
 branches:
- only:
-  - master
+  only:
+    - master
 
 script:
- - make jenkins
+  - make build
+  - make test
 
 notifications:
- email:
-  - bifer@alea-soluciones.com
-
-install:
- - sudo apt update
- - sudo apt install ca-certificates libgnutls30 -y
+  email:
+    - bifer@alea-soluciones.com

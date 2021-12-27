@@ -1,38 +1,25 @@
-all: test build
+all: clean build test
 
-jenkins: install_dep_tool install_go_linter production_restore_deps test build
+update_dep:
+	go get $(DEP)
+	go mod tidy
 
-install_dep_tool:
-	go get github.com/tools/godep
-
-install_go_linter:
-	go get -u -v golang.org/x/lint/golint
-
-initialize_deps:
-	go get -d -v ./...
-	go get -d -v github.com/stretchr/testify/assert
-	go get -d -v github.com/onsi/ginkgo
-	go get -d -v github.com/onsi/gomega
-	go get -v golang.org/x/lint/golint
-	godep save ./...
-
-update_deps:
-	godep go install -v ./...
-	godep go install -v github.com/stretchr/testify/assert
-	godep go install -v github.com/onsi/ginkgo
-	godep go install -v github.com/onsi/gomega
-	godep go install -v golang.org/x/lint/golint
-	godep update ./...
+update_all_deps:
+	go get -u
+	go mod tidy
 
 test:
-	golint ./...
-	godep go vet ./...
-	godep go test -v ./...
+	go vet ./...
+	go clean -testcache
+	go test -v ./...
 
 build:
-	godep go build ./...
+	go build -o examples/crontask examples/crontask/example.go
+	go build -o examples/scheduledtask examples/scheduledtask/example.go
 
-production_restore_deps:
-	godep restore
+clean:
+	rm -f examples/scheduledtask/example
+	rm -f examples/crontask/example
 
-.PHONY: all install_dep_tool install_go_linter initialize_deps update_deps test jenkins
+
+.PHONY: all update_dep update_all_deps test build clean
