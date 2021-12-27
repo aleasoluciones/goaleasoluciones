@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	ZERO_TTL_FOR_TOKEN_MANAGER = 0*time.Millisecond
+	ZERO_TTL_FOR_TOKEN_MANAGER  = 0 * time.Millisecond
 	ONE_CYCLE_FOR_TOKEN_MANAGER = 700 * time.Millisecond
 )
 
@@ -39,7 +39,7 @@ func TestPeriodicFunctionCalledEveryPeriodeUntilTokenTTL(t *testing.T) {
 	periodicFuncTimesCalled := 0
 	tm := tokenManager(&periodicFuncTimesCalled)
 	var tokenTTL = 3 * ONE_CYCLE_FOR_TOKEN_MANAGER
-	var lessThanOneCycle = ONE_CYCLE_FOR_TOKEN_MANAGER - 100 * time.Millisecond
+	var lessThanOneCycle = ONE_CYCLE_FOR_TOKEN_MANAGER - 100*time.Millisecond
 	tm.Add("id", tokenTTL)
 	time.Sleep(lessThanOneCycle)
 	assert.Equal(t, 1, periodicFuncTimesCalled)

@@ -19,12 +19,12 @@ type yamlReader struct {
 
 func (reader *yamlReader) GetIntValue(key string, defaultValue int) (int, bool) {
 	value, ok := reader.load()[key]
-	if ok == false {
+	if !ok {
 		return defaultValue, false
 	}
 
 	intValue, ok := value.(int)
-	if ok == false {
+	if !ok {
 		intValue = defaultValue
 	}
 	return intValue, ok
@@ -32,12 +32,12 @@ func (reader *yamlReader) GetIntValue(key string, defaultValue int) (int, bool) 
 
 func (reader *yamlReader) GetBoolValue(key string, defaultValue bool) (bool, bool) {
 	value, ok := reader.load()[key]
-	if ok == false {
+	if !ok {
 		return defaultValue, false
 	}
 
 	boolValue, ok := value.(bool)
-	if ok == false {
+	if !ok {
 		boolValue = defaultValue
 	}
 	return boolValue, ok
