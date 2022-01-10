@@ -10,7 +10,7 @@ import (
 	"github.com/aleasoluciones/goaleasoluciones/mocks"
 	. "github.com/aleasoluciones/goaleasoluciones/retrier"
 
-	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
 )
 

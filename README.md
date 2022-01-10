@@ -14,6 +14,7 @@ You need a Go runtime installed in your system which supports [modules](https://
 ```sh
 make build
 ```
+
 ## Testing
 
 ```
