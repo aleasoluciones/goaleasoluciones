@@ -4,8 +4,17 @@
 [![GoDoc](https://godoc.org/github.com/aleasoluciones/http2amqp?status.png)](http://godoc.org/github.com/aleasoluciones/http2amqp)
 [![License](https://img.shields.io/github/license/aleasoluciones/http2amqp)](https://github.com/aleasoluciones/http2amqp/blob/master/LICENSE)
 
-
 Common libraries for writing go services/applications.
+
+- cirtuitbreaker
+- clock
+- crontask
+- log
+- retrier
+- safemap
+- scheduledtask
+- timetoken
+- yamlreader
 
 ## Build
 
