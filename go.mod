@@ -3,7 +3,6 @@ module github.com/aleasoluciones/goaleasoluciones
 go 1.17
 
 require (
-	github.com/getsentry/raven-go v0.2.0
 	github.com/getsentry/sentry-go v0.12.0
 	github.com/gorhill/cronexpr v0.0.0-20180427100037-88b0669f7d75
 	github.com/onsi/ginkgo/v2 v2.1.3
@@ -13,7 +12,6 @@ require (
 )
 
 require (
-	github.com/certifi/gocertifi v0.0.0-20210507211836-431795d63e8d // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect

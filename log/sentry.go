@@ -5,27 +5,32 @@ import (
 	"os"
 	"time"
 
-	"github.com/getsentry/raven-go"
 	"github.com/getsentry/sentry-go"
 )
 
 // isSentryActive initialization was turned to false to disable sentry
 var isSentryActive bool = false
 
-// deprecated
 func InitializeSentry() {
-	sentry := os.Getenv("SENTRY_DSN")
-	if sentry == "" {
+	sentryDsn := os.Getenv("SENTRY_DSN")
+	if sentryDsn == "" {
 		isSentryActive = false
 		log.Println("===> Error: Sentry DSN environment not provisoned")
 	}
-	raven.SetDSN(sentry)
+
+	err := sentry.Init(sentry.ClientOptions{
+		Dsn: sentryDsn,
+	})
+
+	if err != nil {
+		log.Printf("===> Error: Sentry initialization failed: %v\n", err)
+	}
 }
 
 func InitSentry() {
-	sentry_dsn := os.Getenv("SENTRY_DSN")
+	sentryDsn := os.Getenv("SENTRY_DSN")
 	err := sentry.Init(sentry.ClientOptions{
-		Dsn: sentry_dsn,
+		Dsn: sentryDsn,
 	})
 	if err != nil {
 		log.Fatalf("sentry.Init: %s", err)
@@ -41,10 +46,9 @@ func HandlePanic() {
 	}
 }
 
-// deprecated
 func LogError2Sentry(err error) {
 	if isSentryActive {
-		raven.CaptureError(err, nil)
+		sentry.CaptureException(err)
 	} else {
 		log.Println("===> Error: Sentry DSN environment not provisoned. Error received:", err)
 	}
