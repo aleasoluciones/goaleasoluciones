@@ -1,6 +1,6 @@
 # goaleasoluciones
 
-[![CI](https://github.com/aleasoluciones/goaleasoluciones/actions/workflows/ci.yml/badge.svg)](https://github.com/aleasoluciones/goaleasoluciones/actions/workflows/ci.yml)
+[![CI](https://github.com/aleasoluciones/goaleasoluciones/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/aleasoluciones/goaleasoluciones/actions/workflows/ci.yml)
 [![GoDoc](https://godoc.org/github.com/aleasoluciones/http2amqp?status.png)](http://godoc.org/github.com/aleasoluciones/http2amqp)
 [![License](https://img.shields.io/github/license/aleasoluciones/http2amqp)](https://github.com/aleasoluciones/http2amqp/blob/master/LICENSE)
 
