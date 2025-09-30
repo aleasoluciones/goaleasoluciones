@@ -1,6 +1,6 @@
 module github.com/aleasoluciones/goaleasoluciones
 
-go 1.17
+go 1.23.0
 
 require (
 	github.com/getsentry/sentry-go v0.12.0
@@ -19,5 +19,5 @@ require (
 	golang.org/x/net v0.36.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
-	gopkg.in/yaml.v3 v3.0.0 // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
